@@ -1,0 +1,21 @@
+                Pin  Pin
+                 1     2
+                 3     4
+                 5     6
+ Back   GPIO7    7     8   Led-3b GPIO15
+ GND             9    10   Led-4b GPIO16
+ Led-1a GPIO0   11    12
+ Led-2a GPIO2   13    14
+ Led-3a GPIO3   15    16   Led-4a GPIO4
+ VDC 3.3v       17    18   Led-1b GPIO5
+ Stop   GPIO12  19    20
+ Forw   GPIO13  21    22   Led-2b GPIO6
+ Start  GPIO14  23    24                
+                25    26
+                27    28
+                29    30
+                31    32
+                33    34
+                35    36
+                37    38
+                39    40

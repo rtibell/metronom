@@ -41,6 +41,7 @@ public class MetronomTimer {
 	}
 	
 	public void stop() {
+		timer.cancel();
 		 gpio.shutdown();
 	}
 	
@@ -103,10 +104,12 @@ public class MetronomTimer {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		MetronomTimer tt = new MetronomTimer(120, true);
 		System.out.println("Pre start");
 		tt.start();
+		System.out.println("Post start");
+		Thread.sleep(10000);
 		System.out.println("Pre stop");
 		tt.stop();
 		System.out.println("Post stop");

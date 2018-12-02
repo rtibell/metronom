@@ -100,6 +100,7 @@ public class MetronomTimer {
 
 	public static void main(String[] args) {
 		MetronomTimer tt = new MetronomTimer(120, true);
+		tt.start();
 
 	}
 

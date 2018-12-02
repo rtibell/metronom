@@ -30,9 +30,9 @@ public class MetronomTimer {
         // provision gpio pin #0, #2, #3, #4 as an output pin and turn on
         led = new GpioPinDigitalOutput[NUMBER_OF_LEDS];
         led[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "1a", PinState.LOW);
-        led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "1a", PinState.LOW);
-        led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "1a", PinState.HIGH);
-        led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "1a", PinState.LOW);
+        led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "2a", PinState.LOW);
+        led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "3a", PinState.HIGH);
+        led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "4a", PinState.LOW);
 
         // set shutdown state for this pin
         for (int idx = 0; idx < NUMBER_OF_LEDS; idx++)
@@ -54,9 +54,12 @@ public class MetronomTimer {
 			
 			try {
 				System.out.println("On                   " + System.currentTimeMillis());
+				led[0].high();
+				led[3].high();
 				Thread.sleep(this.pct);
 				System.out.println("Off " + System.currentTimeMillis());
-				led[0].blink(500);
+				led[0].low();
+				led[3].low();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

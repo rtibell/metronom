@@ -39,6 +39,11 @@ public class MetronomTimer {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new MetronomTask(delay / NUMBER_OF_NOTES), 2000, delay);
 	}
+	
+	public void stop() {
+		 gpio.shutdown();
+	}
+	
 	private void init() {
 		// provision gpio pin #0, #2, #3, #4 as an output pin and turn on
 		led = new GpioPinDigitalOutput[NUMBER_OF_LEDS];
@@ -100,8 +105,11 @@ public class MetronomTimer {
 
 	public static void main(String[] args) {
 		MetronomTimer tt = new MetronomTimer(120, true);
+		System.out.println("Pre start");
 		tt.start();
-
+		System.out.println("Pre stop");
+		tt.stop();
+		System.out.println("Post stop");
 	}
 
 }

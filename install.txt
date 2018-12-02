@@ -1,0 +1,35 @@
+>> cd /etc/wpa_supplicant/
+>> sudo cp wpa_supplicant.conf wpa_supplicant.conf.org
+>> sudo vi wpa_supplicant.conf
+# insert lines below
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+network={
+    ssid="apriori"
+    psk="Fam6T1bell!"
+}    
+>> sudo sync
+>> sudo reboot
+
+# Install GIT   
+>> sudo apt-get install git
+
+# Install Pi4j
+>> curl -s get.pi4j.com | sudo bash
+
+# Install OpenJDK8
+>> sudo apt-get update
+>> sudo apt-get install openjdk-8-jdk
+
+
+# Generate RSA id
+>> ssh-keygen -t rsa
+
+# Create project directory
+>> pwd
+>> mkdir Projcts
+>> cd Projcts/
+
+# Clone GIT repo
+>> git clone git@github.com:rtibell/metronom.git
+

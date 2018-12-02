@@ -13,53 +13,54 @@ public class MetronomTimer {
 	 private static int NUMBER_OF_LEDS = 8;
 	
 	Timer timer;
-	GpioController gpio;
+
+	// create gpio controller
+        final GpioController gpio = GpioFactory.getInstance();
+
 	GpioPinDigitalOutput led[];
 	
 	public MetronomTimer(int bpm) {
-		init();
-		int delay = (60 * 1000) / bpm;
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new MetronomTask(delay/8), 2000, delay);
+            init();
+            int delay = (60 * 1000) / bpm;
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new MetronomTask(delay/8), 2000, delay);
 	}
 	
 	private void init() {
-        // create gpio controller
-        gpio = GpioFactory.getInstance();
+            // provision gpio pin #0, #2, #3, #4 as an output pin and turn on
+            led = new GpioPinDigitalOutput[NUMBER_OF_LEDS];
+            led[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "1a", PinState.HIGH);
+            led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "2a", PinState.HIGH);
+            led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "3a", PinState.HIGH);
+            led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "4a", PinState.HIGH);
 
-        // provision gpio pin #0, #2, #3, #4 as an output pin and turn on
-        led = new GpioPinDigitalOutput[NUMBER_OF_LEDS];
-        led[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "1a", PinState.LOW);
-        led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "2a", PinState.LOW);
-        led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "3a", PinState.HIGH);
-        led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "4a", PinState.LOW);
-
-        // set shutdown state for this pin
-        for (int idx = 0; idx < NUMBER_OF_LEDS; idx++)
-        	if (led[idx] != null)
-        		led[idx].setShutdownOptions(true, PinState.LOW);
-	}
+            // set shutdown state for this pin
+            for (int idx = 0; idx < NUMBER_OF_LEDS; idx++)
+                if (led[idx] != null)
+                    led[idx].setShutdownOptions(true, PinState.LOW);
+        }
 	
 	
 	public class MetronomTask extends TimerTask {
-
 		private int pct;
+		private int idx;
 
 		public MetronomTask(int pct) {
 			this.pct = pct;
+			this.idx = 0;
+			System.out.println("Constructor for MetronomTask.");
 		}
 
 		@Override
 		public void run() {
 			
 			try {
-				System.out.println("On                   " + System.currentTimeMillis());
-				led[0].high();
-				led[3].high();
+				System.out.println("On-" + idx + "                   " + System.currentTimeMillis());
+				led[idx].high();
 				Thread.sleep(this.pct);
-				System.out.println("Off " + System.currentTimeMillis());
-				led[0].low();
-				led[3].low();
+				System.out.println("Off-" + idx + " " + System.currentTimeMillis());
+				led[idx].low();
+                                idx = (idx+1) % 4;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

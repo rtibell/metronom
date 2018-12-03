@@ -73,10 +73,14 @@ public class MetronomTimer {
 	public void forward() {
 		// ToDo temoprary test code, fix this.
 		setBpm(getBpm() + 10);
+		stop();
+		start();
 	}
 	
 	public void backward() {
 		setBpm(getBpm() - 10);
+		stop();
+		start();
 	}
 	
 	private void init() {
@@ -126,7 +130,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_FORWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
-		                forward();
+		                if (event.getState() == PinState.LOW) forward();
 		            }
 		        });
 				break;
@@ -138,7 +142,8 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_BACKWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
-		                backward();
+		                if (event.getState() == PinState.LOW) backward();
+		               
 		            }
 		        });
 				break;

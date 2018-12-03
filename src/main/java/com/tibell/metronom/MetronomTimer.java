@@ -74,16 +74,18 @@ public class MetronomTimer {
 	
 	public void forward() {
 		// ToDo temoprary test code, fix this.
+		boolean isRunning =  (timer != null);
 		stop();
 		setBpm(getBpm() + 10);
-		if (timer != null) start();
+		if (isRunning) start();
 	}
 	
 	public void backward() {
 		// ToDo temoprary test code, fix this.
+		boolean isRunning =  (timer != null);
 		stop();
 		setBpm(getBpm() - 10);
-		if (timer != null) start();
+		if (isRunning) start();
 	}
 	
 	private void init() {

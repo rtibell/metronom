@@ -86,6 +86,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_STOP STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		                stop();
 		            }
 		        });
 				break;
@@ -97,6 +98,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_START STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		                start();
 		            }
 		        });
 				break;
@@ -112,7 +114,7 @@ public class MetronomTimer {
 		        });
 				break;
 			case BUTTON_BACKWARD_INDEX:
-				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "but-4");
+				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "Backward btn");
 				button[i].setShutdownOptions(true);
 				button[i].addListener(new GpioPinListenerDigital() {
 		            @Override
@@ -149,14 +151,14 @@ public class MetronomTimer {
 
 			try {
 				int i = ((idx % 2) == 0) ? (idx / 2) : (idx / 2) + 4;
-				System.out.println("On-" + idx + "                   " + System.currentTimeMillis());
+				//System.out.println("On-" + idx + "                   " + System.currentTimeMillis());
 				led[i].high();
 				Thread.sleep(this.blinkTime);
-				System.out.println("Off-" + idx + " " + System.currentTimeMillis());
+				//System.out.println("Off-" + idx + " " + System.currentTimeMillis());
 				led[i].low();
 				idx = (idx + 1) % 8;
-				System.out.println("B1=" + button[0].isHigh() + " B2=" + button[1].isHigh() + " B3="
-						+ button[2].isHigh() + " B4=" + button[3].isHigh());
+				//System.out.println("B1=" + button[0].isHigh() + " B2=" + button[1].isHigh() + " B3="
+				//		+ button[2].isHigh() + " B4=" + button[3].isHigh());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -171,7 +173,7 @@ public class MetronomTimer {
 		System.out.println("Pre start");
 		tt.start();
 		System.out.println("Post start");
-		Thread.sleep(10000);
+		Thread.sleep(30000);
 		System.out.println("Pre stop");
 		tt.stop();
 		System.out.println("Post stop");

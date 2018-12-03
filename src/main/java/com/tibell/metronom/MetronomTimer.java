@@ -54,10 +54,12 @@ public class MetronomTimer {
 
 
 	public void start() {
-		if (timer == null) {
+		if (timer != null) {
+			stop();
+		}
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2, getDelay());
-		}
+		
 	}
 	
 	public void stop() {
@@ -72,14 +74,15 @@ public class MetronomTimer {
 	
 	public void forward() {
 		// ToDo temoprary test code, fix this.
-		setBpm(getBpm() + 10);
 		stop();
+		setBpm(getBpm() + 10);
 		start();
 	}
 	
 	public void backward() {
-		setBpm(getBpm() - 10);
+		// ToDo temoprary test code, fix this.
 		stop();
+		setBpm(getBpm() - 10);
 		start();
 	}
 	

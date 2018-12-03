@@ -55,7 +55,7 @@ public class MetronomTimer {
 
 	public void start() {
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2000, getDelay());
+		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2, getDelay());
 	}
 	
 	public void stop() {

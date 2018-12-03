@@ -71,14 +71,14 @@ public class MetronomTimer {
 	private void init() {
 		// provision gpio pin #0, #2, #3, #4 as an output pin and turn on
 		led = new GpioPinDigitalOutput[NUMBER_OF_LEDS];
-		led[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "1a", PinState.HIGH);
-		led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "2a", PinState.HIGH);
-		led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "3a", PinState.HIGH);
-		led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "4a", PinState.HIGH);
-		led[4] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "1b", PinState.HIGH);
-		led[5] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "2b", PinState.HIGH);
-		led[6] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "3b", PinState.HIGH);
-		led[7] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "4b", PinState.HIGH);
+		led[0] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "1a", PinState.LOW);
+		led[1] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "2a", PinState.LOW);
+		led[2] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "3a", PinState.LOW);
+		led[3] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "4a", PinState.LOW);
+		led[4] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "1b", PinState.LOW);
+		led[5] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_06, "2b", PinState.LOW);
+		led[6] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "3b", PinState.LOW);
+		led[7] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "4b", PinState.LOW);
 
 		button = new GpioPinDigitalInput[NUMBER_OF_BUTTONS];
 		for (int i = 0 ; i < NUMBER_OF_BUTTONS; i++)
@@ -181,6 +181,7 @@ public class MetronomTimer {
 		Thread.sleep(30000);
 		System.out.println("Pre stop");
 		tt.stop();
+		tt.shutdown();
 		System.out.println("Post stop");
 	}
 

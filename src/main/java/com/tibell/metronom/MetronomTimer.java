@@ -125,7 +125,7 @@ public class MetronomTimer {
 		            @Override
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
-		                System.out.println(" --> BUTTON_FORWARD STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		                System.out.println(" --> BUTTON_FORWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
 		            }
 		        });
 				break;
@@ -136,7 +136,7 @@ public class MetronomTimer {
 		            @Override
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
-		                System.out.println(" --> BUTTON_BACKWARD STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		                System.out.println(" --> BUTTON_BACKWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
 		            }
 		        });
 				break;

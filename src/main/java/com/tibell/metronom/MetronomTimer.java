@@ -59,7 +59,7 @@ public class MetronomTimer {
 	}
 	
 	public void stop() {
-		timer.cancel();
+		if (timer != null) timer.cancel();
 		timer = null;
 	}
 
@@ -91,7 +91,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_STOP STATE CHANGE: " + event.getPin() + " = " + event.getState());
-		                stop();
+		                if (event.getState() == PinState.HIGH) stop();
 		            }
 		        });
 				break;
@@ -103,7 +103,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_START STATE CHANGE: " + event.getPin() + " = " + event.getState());
-		                start();
+		                if (event.getState() == PinState.HIGH) start();
 		            }
 		        });
 				break;

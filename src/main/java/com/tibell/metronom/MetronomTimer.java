@@ -39,7 +39,7 @@ public class MetronomTimer {
 
 	
 	public int getBpm() {
-		return bpm;
+		return this.bpm;
 	}
 
 
@@ -126,6 +126,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_FORWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
+		                forward();
 		            }
 		        });
 				break;
@@ -137,6 +138,7 @@ public class MetronomTimer {
 		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		                // display pin state on console
 		                System.out.println(" --> BUTTON_BACKWARD STATE CHANGE: " + event.getPin() + " = " + event.getState() + " / " + getBpm());
+		                backward();
 		            }
 		        });
 				break;

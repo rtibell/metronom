@@ -34,7 +34,6 @@ public class MetronomTimer {
 	public MetronomTimer(int bpm, boolean oe) {
 		this.bpm = bpm;
 		this.oneeight = oe;
-		timer = new Timer();
 		init();
 	}
 
@@ -55,15 +54,17 @@ public class MetronomTimer {
 
 
 	public void start() {
+		timer = new Timer();
 		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2000, getDelay());
 	}
 	
 	public void stop() {
 		timer.cancel();
+		timer = null;
 	}
 
 	public void shutdown() {
-		timer.cancel();
+		if (timer != null) timer.cancel();
 		 gpio.shutdown();
 	}
 	

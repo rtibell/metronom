@@ -9,19 +9,21 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class MetronomTimer {
-	private static int NUMBER_OF_NOTES = 4;
-	private static int NUMBER_OF_LEDS = 2*NUMBER_OF_NOTES;
-	private static int NUMBER_OF_BUTTONS = 4;
-	private static int BUTTON_STOP_INDEX = 0;
-	private static int BUTTON_START_INDEX = 2;
-	private static int BUTTON_FORWARD_INDEX = 1;
-	private static int BUTTON_BACKWARD_INDEX = 3;
+	private static final int NUMBER_OF_NOTES = 4;
+	private static final int NUMBER_OF_LEDS = 2*NUMBER_OF_NOTES;
+	private static final int NUMBER_OF_BUTTONS = 4;
+	private static final int BUTTON_STOP_INDEX = 0;
+	private static final int BUTTON_START_INDEX = 2;
+	private static final int BUTTON_FORWARD_INDEX = 1;
+	private static final int BUTTON_BACKWARD_INDEX = 3;
 
 	private Timer timer;
 	private boolean oneeight = false; 
-	private int delay;
+	private int bpm;
 
 	// create gpio controller
 	final GpioController gpio = GpioFactory.getInstance();
@@ -30,14 +32,30 @@ public class MetronomTimer {
 	GpioPinDigitalInput button[];
 
 	public MetronomTimer(int bpm, boolean oe) {
-		init();
-		delay = (60 * 1000) / bpm;
+		this.bpm = bpm;
 		this.oneeight = oe;
+		init();
 	}
+
+	
+	public int getBpm() {
+		return bpm;
+	}
+
+
+	public void setBpm(int bpm) {
+		this.bpm = bpm;
+	}
+
+
+	public int getDelay() {
+		return  (60 * 1000) / getBpm();
+	}
+
 
 	public void start() {
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new MetronomTask(delay / NUMBER_OF_NOTES), 2000, delay);
+		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2000, getDelay());
 	}
 	
 	public void stop() {
@@ -58,10 +76,54 @@ public class MetronomTimer {
 		led[7] = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "4b", PinState.HIGH);
 
 		button = new GpioPinDigitalInput[NUMBER_OF_BUTTONS];
-		button[0] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_12, "but-1");
-		button[1] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_13, "but-2");
-		button[2] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_14, "but-3");
-		button[3] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "but-4");
+		for (int i = 0 ; i < NUMBER_OF_BUTTONS; i++)
+			switch(i) {
+			case BUTTON_STOP_INDEX:
+				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_12, "Stop btn");
+				button[i].setShutdownOptions(true);
+				button[i].addListener(new GpioPinListenerDigital() {
+		            @Override
+		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+		                // display pin state on console
+		                System.out.println(" --> BUTTON_STOP STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		            }
+		        });
+				break;
+			case BUTTON_START_INDEX:
+				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_14, "Start btn");
+				button[i].setShutdownOptions(true);
+				button[i].addListener(new GpioPinListenerDigital() {
+		            @Override
+		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+		                // display pin state on console
+		                System.out.println(" --> BUTTON_START STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		            }
+		        });
+				break;
+			case BUTTON_FORWARD_INDEX:
+				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_13, "Forward btn");
+				button[i].setShutdownOptions(true);
+				button[i].addListener(new GpioPinListenerDigital() {
+		            @Override
+		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+		                // display pin state on console
+		                System.out.println(" --> BUTTON_FORWARD STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		            }
+		        });
+				break;
+			case BUTTON_BACKWARD_INDEX:
+				button[i] = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "but-4");
+				button[i].setShutdownOptions(true);
+				button[i].addListener(new GpioPinListenerDigital() {
+		            @Override
+		            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+		                // display pin state on console
+		                System.out.println(" --> BUTTON_BACKWARD STATE CHANGE: " + event.getPin() + " = " + event.getState());
+		            }
+		        });
+				break;
+			}
+
 
 		// set shutdown state for this pin
 		for (int idx = 0; idx < NUMBER_OF_LEDS; idx++)

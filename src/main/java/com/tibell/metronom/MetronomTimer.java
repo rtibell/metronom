@@ -21,9 +21,9 @@ public class MetronomTimer {
 	private static final int BUTTON_FORWARD_INDEX = 1;
 	private static final int BUTTON_BACKWARD_INDEX = 3;
 
-	private Timer timer;
+	private Timer timer = null;
 	private boolean oneeight = false; 
-	private int bpm;
+	private int bpm = 120;
 
 	// create gpio controller
 	final GpioController gpio = GpioFactory.getInstance();
@@ -54,8 +54,10 @@ public class MetronomTimer {
 
 
 	public void start() {
+		if (timer == null) {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new MetronomTask(getDelay() / NUMBER_OF_NOTES), 2, getDelay());
+		}
 	}
 	
 	public void stop() {
@@ -66,6 +68,15 @@ public class MetronomTimer {
 	public void shutdown() {
 		if (timer != null) timer.cancel();
 		 gpio.shutdown();
+	}
+	
+	public void forward() {
+		// ToDo temoprary test code, fix this.
+		setBpm(getBpm() + 10);
+	}
+	
+	public void backward() {
+		setBpm(getBpm() - 10);
 	}
 	
 	private void init() {
